@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('partials.errors')
     <div class="row">
         <div class="col s8 offset-s2">
             <div class="card">
@@ -13,28 +14,24 @@
                         @csrf
                         <div class="row">
                             <div class="input-field col s12">
-                                <i class="material-icons prefix">person</i>
-                                <label for="name">{{ __('Name') }}</label>
-                                <input id="name" type="text"  name="name" value="{{ old('name') }}" required autofocus>
+                                <i class="material-icons prefix">person_outline</i>
+                                <label for="fName">{{ __('First Name') }}</label>
+                                <input id="fName" type="text"  name="fName" value="{{ old('fName') }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">person_outline</i>
+                                <label for="lName">{{ __('Last Name') }}</label>
+                                <input id="lName" type="text"  name="lName" value="{{ old('lName') }}" required autofocus>
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('name') }}</strong>
-                                        </span>
-                                @endif
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">mail_outline</i>
                                 <label for="email">{{ __('E-Mail Address') }}</label>
-                                <input id="email" type="email"  name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                @endif
+                                <input id="email" type="email" name="email" value="{{ old('email') }}" required>
                             </div>
                         </div>
 
@@ -43,12 +40,6 @@
                                 <i class="material-icons prefix">lock_outline</i>
                                 <label for="password">{{ __('Password') }}</label>
                                 <input id="password" type="password" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                @endif
                             </div>
                         </div>
                         <div class="row">

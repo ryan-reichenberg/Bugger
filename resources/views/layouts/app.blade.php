@@ -12,24 +12,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-
-    <style>
-        .input-field input:focus {
-            border-bottom: 1px solid #607D8B !important;
-            box-shadow: 0 1px 0 0 #607D8B !important;
-        }
-        .input-field .prefix.active {
-            color: #607D8B !important;
-        }
-        .padding-top{
-            padding-top: 1.5rem;
-        }
-        .logo{
-            padding: 15px;
-            display: block;
-            margin: 0 auto;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/site.css')}}">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -48,8 +31,8 @@
                         <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                         <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                     @else
-                            <li><a class="dropdown-trigger" href="#!" data-target="user-dropdown">Hello, <i class="material-icons right">arrow_drop_down</i>
-                                {{ Auth::user()->name }}! <span class="caret"></span>
+                            <li><a class="dropdown-button" href="#!" data-activates="user-dropdown" data-beloworigin="true">Hello, <i class="material-icons right">arrow_drop_down</i>
+                                {{ Auth::user()->fName }}! <span class="caret"></span>
                                 </a></li>
 
                         <ul id="user-dropdown" class="dropdown-content">
@@ -74,10 +57,15 @@
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".dropdown-trigger").dropdown();
+            $(".dropdown-button").dropdown();
+
+            $('.alert-close').click(function(){
+                $( '.alert' ).fadeOut( "slow", function() {
+                });
+            });
         });
     </script>
 </body>

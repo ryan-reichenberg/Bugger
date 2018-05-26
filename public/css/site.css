@@ -1,0 +1,26 @@
+.input-field input:focus {
+    border-bottom: 1px solid #607D8B !important;
+    box-shadow: 0 1px 0 0 #607D8B !important;
+}
+.input-field .prefix.active {
+    color: #607D8B !important;
+}
+.padding-top{
+    padding-top: 1.5rem;
+}
+.logo{
+    padding: 15px;
+    display: block;
+    margin: 0 auto;
+}
+.alert-close{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+.alert{
+    color: white;
+}
+.alert-close{
+    cursor: pointer;
+}
