@@ -24,3 +24,15 @@
 .alert-close{
     cursor: pointer;
 }
+.side-nav{
+    top: 65px;
+    width: 250px;
+}
+.wrapper{
+    padding-left: 250px;
+}
+.nav-logo{
+    width: 55px;
+    padding-top: 5px;
+    padding-left: 5px;
+}

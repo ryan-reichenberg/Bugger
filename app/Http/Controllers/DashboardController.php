@@ -3,8 +3,9 @@
 namespace Bugger\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Bugger\Ticket;
 
-class HomeController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $tickets = Ticket::all();
+        return view('dashboard')->with('tickets', $tickets);
     }
 }

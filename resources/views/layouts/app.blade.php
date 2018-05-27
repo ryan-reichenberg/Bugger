@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }} Issue Management System</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link rel="stylesheet" href="{{ asset('css/site.css')}}">
 
     <!-- Fonts -->
@@ -24,7 +24,7 @@
         <nav>
             <div class="nav-wrapper blue-grey">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }} Issue Management System
+                    <img src="{{asset("img/logo.png")}}" alt="logo" class="responsive-img nav-logo">
                 </a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     @guest
@@ -36,6 +36,7 @@
                                 </a></li>
 
                         <ul id="user-dropdown" class="dropdown-content">
+                            <li><a href="#">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
@@ -61,7 +62,7 @@
     <script>
         $(document).ready(function() {
             $(".dropdown-button").dropdown();
-
+            $(".button-collapse").sideNav();
             $('.alert-close').click(function(){
                 $( '.alert' ).fadeOut( "slow", function() {
                 });
