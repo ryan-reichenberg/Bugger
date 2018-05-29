@@ -60,14 +60,59 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="{{asset('js/jquery.materialize-autocomplete.min.js')}}"></script>
     <script>
         $(document).ready(function() {
             $(".dropdown-button").dropdown();
             $(".button-collapse").sideNav();
+            $('select').material_select();
             $('.alert-close').click(function () {
                 $('.alert').fadeOut("slow", function () {
                 });
             });
+            var multiple = $('#multipleInput').materialize_autocomplete({
+                multiple: {
+                    enable: true,
+                    maxSize: 30,
+                    onAppend: function(item) {
+                        console.log($('.chip').length);
+
+
+                        if($('.chip').length > 0)
+                            $('.assigned-members').css({ 'display' : 'block'});
+                    },
+                    onRemove: function (item) {
+                        if($('.chip').length == 0)
+                            $('.assigned-members').css({ 'display' : 'none'});
+                    }
+                },
+                hidden: {
+                    enable: true,
+                    inputName: 'multiple'
+                },
+                dropdown: {
+                    el: '#multipleDropdown'
+                },
+                appender: {
+                    el: '.ac-users',
+                    tagTemplate: '<div class="chip" data-id="<%= item.id %>" data-text="<%= item.text %>"><%= item.text %><i class="material-icons close">close</i></div>'
+                },
+                     getData: function(value, callback) {
+                        var data = [];
+                        @foreach($users as $user)
+                            var obj = {};
+                            obj.id = {{$user->id}};
+                            obj.text = '{{$user->getFullName()}}'
+                            data.push(obj);
+                        @endforeach
+                        data = data.filter(function(el){
+                            console.log(el.text.toLowerCase().indexOf(value.toLowerCase()));
+    	    		        return el.text.toLowerCase().indexOf(value.toLowerCase()) == 0;
+    	    	        });
+                        console.log(data);
+                        callback(value, data);
+                     }
+                });
             @if(Auth::check())
                 var low = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'low'])->count()}};
                 var medium = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'medium'])->count()}};

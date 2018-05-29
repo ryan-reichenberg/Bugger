@@ -41,4 +41,7 @@ class User extends Authenticatable
         }
         return false;
     }
+    public function getFullName(){
+        return $this->fName . ' ' . $this->lName;
+    }
 }

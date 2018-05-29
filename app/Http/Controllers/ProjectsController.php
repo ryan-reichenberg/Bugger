@@ -3,6 +3,7 @@
 namespace Bugger\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Bugger\User;
 
 class ProjectsController extends Controller
 {
@@ -12,7 +13,8 @@ class ProjectsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        return View('projects.index');
+        $users = User::all();
+        return View('projects.index')->with('users', $users);
     }
 
     /**
@@ -22,7 +24,8 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        return View('projects.create');
+        $users = User::all();
+        return View('projects.create')->with('users', $users);
     }
 
     /**
@@ -33,7 +36,7 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       return $request->input('multiple');
     }
 
     /**
