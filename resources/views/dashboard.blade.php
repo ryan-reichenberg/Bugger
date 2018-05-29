@@ -3,12 +3,8 @@
 @section('content')
     <div class="wrapper">
         <div class="container">
-            <ul id="slide-out" class="side-nav fixed">
-                <li><a href="#!"> <i class="material-icons prefix">insert_chart</i>Dashboard</a></li>
-                <li><a href="#!"> <i class="material-icons prefix">folder_open</i>Projects</a></li>
-                <li><a href="#!"> <i class="material-icons prefix">person</i>Members</a></li>
-                <li><a href="#!"> <i class="material-icons prefix">settings</i>Settings</a></li>
-            </ul>
+           @include('partials.sidenav')
+
             @if (session('status'))
                 <div class="row">
                     <div class="col alert m4">
@@ -62,6 +58,43 @@
                     </div>
                 </div>
         </div>
+                    <div class="row">
+                        <div class="col s4">
+                            <div class="card ">
+                                <div class="card-content center">
+                                    @if(Auth::user()->tickets->where('closed', false)->count() > 0)
+                                        <canvas id="issuesPriorityChart" width="400" height="300"></canvas>
+                                        @else
+                                           No data to display.
+                                        @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s4">
+                            <div class="card ">
+
+                                <div class="card-content center">
+                                    @if(Auth::user()->tickets->where('closed', false)->count() > 0 || Auth::user()->tickets->where('closed', true)->count() > 0)
+                                        <canvas id="issuesOpenedChart" width="400" height="300"></canvas>
+                                    @else
+                                        No data to display.
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s4">
+                            <div class="card ">
+
+                                <div class="card-content center">
+                                    @if(Auth::user()->projects->count() > 0 || Auth::user()->anyIssuesRegistered())
+                                        <canvas id="issuesToProjectsChart" width="400" height="300"></canvas>
+                                    @else
+                                        No data to display.
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
     </div>
         </div>
 @endsection

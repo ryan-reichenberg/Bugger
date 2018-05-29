@@ -58,15 +58,75 @@
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script>
         $(document).ready(function() {
             $(".dropdown-button").dropdown();
             $(".button-collapse").sideNav();
-            $('.alert-close').click(function(){
-                $( '.alert' ).fadeOut( "slow", function() {
+            $('.alert-close').click(function () {
+                $('.alert').fadeOut("slow", function () {
                 });
             });
+            @if(Auth::check())
+                var low = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'low'])->count()}};
+                var medium = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'medium'])->count()}};
+                var high = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'high'])->count()}};
+
+                new Chart(document.getElementById("issuesPriorityChart"), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ["Low", "Medium", "High"],
+                        datasets: [
+                            {
+                                label: "Opened Issues",
+                                backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f"],
+                                data: []
+                            }
+                        ]
+                    }
+                });
+                var open = {{Auth::user()->tickets->where('closed', false)->count()}};
+                var closed = {{Auth::user()->tickets->where('closed', true)->count()}};
+                new Chart(document.getElementById("issuesOpenedChart"), {
+                    type: 'bar',
+                    data: {
+                        labels: ["Opened", "Closed",],
+                        datasets: [
+                            {
+                                label: "Opened to Closed Issues",
+                                backgroundColor: ["#3e95cd", "#8e5ea2",],
+                                data: [open, closed]
+                            }
+                        ]
+                    }
+                });
+                var projectLabels = [];
+                var issues = [];
+                @foreach(Auth::user()->projects as $project)
+                projectLabels.push({{$project->name}});
+                issues.push({{$project->issues->count()}});
+                @endforeach
+                new Chart(document.getElementById("issuesToProjectsChart"), {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: projectLabels,
+                        datasets: [
+                            {
+                                label: "Issues per project",
+                                data: issues
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: {display: false},
+                        title: {
+                            display: true,
+                            text: 'Predicted world population (millions) in 2050'
+                        }
+                    }
+                });
+            @endif
         });
     </script>
 </body>
