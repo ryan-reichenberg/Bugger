@@ -26,7 +26,7 @@
                         <span class="card-title">Tickets Total</span>
 
                         <div class="card-content center">
-                            <h3><a href="#">{{$tickets->count()}}</a></h3>
+                            <h3>{{$tickets->count()}}</h3>
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                         <span class="card-title">Tickets In Progress</span>
 
                         <div class="card-content center">
-                            <h3><a href="#">{{Auth::user()->tickets->count()}}</a></h3>
+                            <h3>{{Auth::user()->tickets->where('closed', false)->count()}}</h3>
                         </div>
                     </div>
                 </div>
@@ -44,16 +44,16 @@
                         <span class="card-title">Tickets Closed</span>
 
                         <div class="card-content center">
-                            <h3><a href="#">{{Auth::user()->tickets->where('closed', false)->count()}}</a></h3>
+                            <h3>{{Auth::user()->tickets->where('closed', true)->count()}}</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col s3">
                     <div class="card ">
-                        <span class="card-title">Total Projects</span>
+                        <span class="card-title">Total Projects Involved</span>
 
                         <div class="card-content center">
-                            <h3><a href="#">{{Auth::user()->projects->count()}}</a></h3>
+                            <h3>{{Auth::user()->projects->count()}}</h3>
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                             <div class="card ">
 
                                 <div class="card-content center">
-                                    @if(Auth::user()->projects->count() > 0 || Auth::user()->anyIssuesRegistered())
+                                    @if(Auth::user()->anyIssuesRegistered())
                                         <canvas id="issuesToProjectsChart" width="400" height="300"></canvas>
                                     @else
                                         No data to display.

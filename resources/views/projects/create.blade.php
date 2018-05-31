@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <p class="assigned-members">Assigned members:</p>
+                                <p class="hide-members">Assigned members:</p>
                                 <div class="ac-users"></div>
                             </div>
                             <div class="row">

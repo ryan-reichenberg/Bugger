@@ -35,7 +35,7 @@ class User extends Authenticatable
     }
     public function anyIssuesRegistered(){
         foreach ($this->projects as $project){
-            if($project->issues->count() > 0){
+            if($project->tickets->count() > 0){
                 return true;
             }
         }

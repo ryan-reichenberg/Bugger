@@ -68,6 +68,50 @@
 .autocomplete .ac-input input {
     height: 2.4rem;
 }
-.assigned-members{
+.hide-members{
     display: none;
+}
+.assigned-members{
+    display: flex;
+    justify-content: flex-start;
+}
+.member{
+    padding: 0 15px;
+    display: flex;
+
+}
+.member img {
+    padding-right: 5px;
+    align-self: center;
+}
+.nametag{
+    margin-top: 5px !important;
+}
+.title{
+    display: flex;
+    justify-content: space-between;
+}
+#tickets{
+    padding-right: 15px;
+}
+.radio-buttons{
+    margin-left: 30px;
+}
+.tags{
+    float: left;
+}
+.tag{
+    float:left !important;
+    margin: 2px !important;
+    display: inline-block !important;
+}
+.name{
+    text-align: left;
+    margin-right: 5px;
+}
+#tags-container{
+    width: 190px;
+}
+#names-container{
+    width: 250px;
 }

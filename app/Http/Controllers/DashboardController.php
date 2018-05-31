@@ -4,6 +4,7 @@ namespace Bugger\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Bugger\Ticket;
+use Bugger\User;
 
 class DashboardController extends Controller
 {
@@ -25,6 +26,7 @@ class DashboardController extends Controller
     public function index()
     {
         $tickets = Ticket::all();
-        return view('dashboard')->with('tickets', $tickets);
+        $users = User::all();
+        return view('dashboard')->with('tickets', $tickets)->with('users', $users);
     }
 }

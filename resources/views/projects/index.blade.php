@@ -21,14 +21,14 @@
                 <tr>
                     <td>{{$project->name}}</td>
                     <td>{{$project->description}}</td>
-                    <td>{{$project->users->count()}}</td>
-                    <td>{{$project->issues->where('closed', false)->count()}}</td>
-                    <td>{{$project->issues->where('closed', true)->count()}}</td>
-                    <td><a href="#" class="waves-effect waves-light btn center tooltipped" data-position="bottom" data-delay="50" data-tooltip="Go to project"><i class="material-icons" style="font-size: 30px;">exit_to_app</i></a></td>
+                    <td>{{$project->members->count()}}</td>
+                    <td>{{$project->tickets->where('closed', false)->count()}}</td>
+                    <td>{{$project->tickets->where('closed', true)->count()}}</td>
+                    <td><a href="{{route('projects.show', ['id' => $project->id])}}" class="waves-effect waves-light btn center tooltipped blue-grey" data-position="bottom" data-delay="50" data-tooltip="Go to project"><i class="material-icons" style="font-size: 30px;">exit_to_app</i></a></td>
                 </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-    </div>
+
     @endsection

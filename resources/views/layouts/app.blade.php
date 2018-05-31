@@ -36,7 +36,7 @@
                                 </a></li>
 
                         <ul id="user-dropdown" class="dropdown-content">
-                            <li><a href="#">Profile</a></li>
+                            <li><a href="{{route('dashboard')}}">Dashboard</a></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
@@ -66,6 +66,7 @@
             $(".dropdown-button").dropdown();
             $(".button-collapse").sideNav();
             $('select').material_select();
+            $('.modal').modal();
             $('.alert-close').click(function () {
                 $('.alert').fadeOut("slow", function () {
                 });
@@ -75,20 +76,19 @@
                     enable: true,
                     maxSize: 30,
                     onAppend: function(item) {
-                        console.log($('.chip').length);
-
-
+                        console.log('length1: ' + $('.chip').length);
                         if($('.chip').length > 0)
-                            $('.assigned-members').css({ 'display' : 'block'});
+                            $('.hide-members').css({ 'display' : 'block'});
                     },
                     onRemove: function (item) {
+                        console.log('length1-r: ' + $('.chip').length);
                         if($('.chip').length == 0)
-                            $('.assigned-members').css({ 'display' : 'none'});
-                    }
+                            $('.hide-members').css({ 'display' : 'none'});
+                    },
                 },
                 hidden: {
                     enable: true,
-                    inputName: 'multiple'
+                    inputName: 'members'
                 },
                 dropdown: {
                     el: '#multipleDropdown'
@@ -98,26 +98,84 @@
                     tagTemplate: '<div class="chip" data-id="<%= item.id %>" data-text="<%= item.text %>"><%= item.text %><i class="material-icons close">close</i></div>'
                 },
                      getData: function(value, callback) {
+                        var members = [];
                         var data = [];
+                        @if(isset($project))
+                            @foreach($project->members as $member)
+                                members.push('{{$member->getFullName()}}');
+                            @endforeach
+                        @endif
                         @foreach($users as $user)
-                            var obj = {};
-                            obj.id = {{$user->id}};
-                            obj.text = '{{$user->getFullName()}}'
-                            data.push(obj);
+                          if(!members.includes('{{$user->getFullName()}}')){
+                                var obj = {};
+                                obj.id = {{$user->id}};
+                                obj.text = '{{$user->getFullName()}}'
+                                data.push(obj);
+                            }
                         @endforeach
                         data = data.filter(function(el){
                             console.log(el.text.toLowerCase().indexOf(value.toLowerCase()));
     	    		        return el.text.toLowerCase().indexOf(value.toLowerCase()) == 0;
     	    	        });
                         console.log(data);
+
+                        callback(value, data);
+                     }
+                });
+                var multipleTickets = $('#multipleInputTickets').materialize_autocomplete({
+                multiple: {
+                    enable: true,
+                    maxSize: 30,
+                    onAppend: function(item) {
+                        console.log('lenght2: '+$('.chip').length);
+
+
+                        if($('.chip').length > 0)
+                            $('.hide-members').css({ 'display' : 'block'});
+                    },
+                    onRemove: function (item) {
+                    console.log('lenght: '+$('.chip'));
+                        if($('.chip').length == 0)
+                            $('.hide-members').css({ 'display' : 'none'});
+                    }
+                },
+                hidden: {
+                    enable: true,
+                    inputName: 'membersTickets'
+                },
+                dropdown: {
+                    el: '#multipleDropdown'
+                },
+                appender: {
+                    el: '.ac-users-tickets',
+                    tagTemplate: '<div class="chip" data-id="<%= item.id %>" data-text="<%= item.text %>"><%= item.text %><i class="material-icons close">close</i></div>'
+                },
+                     getData: function(value, callback) {
+                        var data = [];
+                        @if(isset($project))
+                            @foreach($project->members as $member)
+                                    var obj = {};
+                                    obj.id = {{$member->id}};
+                                    obj.text = '{{$member->getFullName()}}'
+                                    data.push(obj);
+                            @endforeach
+                        @endif
+                        data = data.filter(function(el){
+                            console.log(el.text.toLowerCase().indexOf(value.toLowerCase()));
+    	    		        return el.text.toLowerCase().indexOf(value.toLowerCase()) == 0;
+    	    	        });
+                        console.log(data);
+
                         callback(value, data);
                      }
                 });
             @if(Auth::check())
-                var low = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'low'])->count()}};
-                var medium = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'medium'])->count()}};
-                var high = {{Auth::user()->tickets->where(['closed', '=', false], ['priority', '=', 'high'])->count()}};
-
+                var low = {{Auth::user()->tickets->where('closed',false)->where('priority', 'low')->count()}};
+                var medium = {{Auth::user()->tickets->where('closed',false)->where('priority', 'medium')->count()}};
+                var high = {{Auth::user()->tickets->where('closed',false)->where('priority', 'high')->count()}};
+                console.log(low);
+                console.log(medium);
+                console.log(high);
                 new Chart(document.getElementById("issuesPriorityChart"), {
                     type: 'doughnut',
                     data: {
@@ -126,7 +184,7 @@
                             {
                                 label: "Opened Issues",
                                 backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f"],
-                                data: []
+                                data: [low, medium, high]
                             }
                         ]
                     }
@@ -144,13 +202,26 @@
                                 data: [open, closed]
                             }
                         ]
-                    }
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value) { if (Number.isInteger(value)) { return value; } },
+                                    stepSize: 1
+                                }
+                            }]
+                        }
+                    },
                 });
                 var projectLabels = [];
                 var issues = [];
                 @foreach(Auth::user()->projects as $project)
-                projectLabels.push({{$project->name}});
-                issues.push({{$project->issues->count()}});
+                    projectLabels.push('{{$project->name}}');
+                    @foreach($project->tickets as $ticket)
+                        issues.push({{$ticket->members->where('fName', Auth::user()->fName)->where('lName', Auth::user()->lName)->count()}});
+                    @endforeach
                 @endforeach
                 new Chart(document.getElementById("issuesToProjectsChart"), {
                     type: 'horizontalBar',
@@ -167,9 +238,18 @@
                         legend: {display: false},
                         title: {
                             display: true,
-                            text: 'Predicted world population (millions) in 2050'
+                            text: 'Number of tickets per project'
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value) { if (Number.isInteger(value)) { return value; } },
+                                    stepSize: 1
+                                }
+                            }]
                         }
-                    }
+                    },
                 });
             @endif
         });

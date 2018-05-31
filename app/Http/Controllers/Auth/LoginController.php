@@ -4,6 +4,8 @@ namespace Bugger\Http\Controllers\Auth;
 
 use Bugger\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Bugger\User;
 
 class LoginController extends Controller
 {
@@ -18,7 +20,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers{
+        logout as performLogout;
+    }
 
     /**
      * Where to redirect users after login.
@@ -35,5 +39,15 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function showLoginForm()
+    {
+        $users = User::all();
+        return view('auth.login', compact('users'));
+    }
+    public function logout(Request $request)
+    {
+        $this->performLogout($request);
+        return redirect('/');
     }
 }
