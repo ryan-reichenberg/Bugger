@@ -18,6 +18,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 @endif
 
             <div class="row">
@@ -26,7 +27,7 @@
                         <span class="card-title">Tickets Total</span>
 
                         <div class="card-content center">
-                            <h3>{{$tickets->count()}}</h3>
+                            <h3>{{Auth::user()->tickets->count()}}</h3>
                         </div>
                     </div>
                 </div>
@@ -57,7 +58,6 @@
                         </div>
                     </div>
                 </div>
-        </div>
                     <div class="row">
                         <div class="col s4">
                             <div class="card ">
@@ -86,13 +86,14 @@
                             <div class="card ">
 
                                 <div class="card-content center">
-                                    @if(Auth::user()->anyIssuesRegistered())
+                                    @if(Auth::user()->anyIssuesRegistered(Auth::user()->id))
                                         <canvas id="issuesToProjectsChart" width="400" height="300"></canvas>
                                     @else
                                         No data to display.
                                     @endif
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
     </div>

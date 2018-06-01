@@ -219,9 +219,8 @@
                 var issues = [];
                 @foreach(Auth::user()->projects as $project)
                     projectLabels.push('{{$project->name}}');
-                    @foreach($project->tickets as $ticket)
-                        issues.push({{$ticket->members->where('fName', Auth::user()->fName)->where('lName', Auth::user()->lName)->count()}});
-                    @endforeach
+                    issues.push({{$project->getUserTickets(Auth::user()->id)->count()}});
+
                 @endforeach
                 new Chart(document.getElementById("issuesToProjectsChart"), {
                     type: 'horizontalBar',

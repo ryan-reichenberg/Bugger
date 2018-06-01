@@ -12,4 +12,10 @@ class Project extends Model
     public function tickets(){
         return $this->hasMany('Bugger\Ticket');
     }
+    public function getUserTickets($id){
+        return $this->tickets()->whereHas('members', function($query) use($id){
+            $query->where('user_id',$id);
+        })->get();
+
+    }
 }

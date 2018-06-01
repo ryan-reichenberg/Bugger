@@ -33,9 +33,9 @@ class User extends Authenticatable
     public function projects(){
         return $this->belongsToMany('Bugger\Project');
     }
-    public function anyIssuesRegistered(){
+    public function anyIssuesRegistered($id){
         foreach ($this->projects as $project){
-            if($project->tickets->count() > 0){
+            if($project->getUserTickets($id)->count() > 0) {
                 return true;
             }
         }

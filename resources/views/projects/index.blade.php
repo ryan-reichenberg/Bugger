@@ -10,8 +10,8 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th>Members</th>
-                    <th>Open Issues</th>
-                    <th>Closed Issues</th>
+                    <th>Open Tickets</th>
+                    <th>Closed Tickets</th>
                     <th></th>
                 </tr>
                 </thead>

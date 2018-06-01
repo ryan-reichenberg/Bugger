@@ -63,7 +63,19 @@
                                                 @endforeach
                                             </p>
                                         </td>
-                                        <td>{{$ticket->priority}}</td>
+                                        <td>
+                                            @switch($ticket->priority)
+                                                @case('low')
+                                                    <span class="new badge green lighten-2 tag" data-badge-caption="Low"></span>
+                                                @break
+                                                @case('medium')
+                                                    <span class="new badge orange lighten-2 tag" data-badge-caption="Medium"></span>
+                                                @break
+                                                @case('high')
+                                                    <span class="new badge red tag" data-badge-caption="High"></span>
+                                                @break
+                                            @endswitch
+                                        </td>
                                         <td>{{$ticket->created_at->diffForHumans()}}</td>
                                         <td><a href="{{route('tickets.show', ['id' => $ticket->id])}}" class="waves-effect waves-light btn center tooltipped blue-grey" data-position="bottom" data-delay="50" data-tooltip="Inspect ticket"><i class="material-icons" style="font-size: 30px;">search</i></a></td>
                                     </tr>

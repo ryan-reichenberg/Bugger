@@ -18,4 +18,7 @@ class Ticket extends Model
     public function tags(){
         return $this->belongsToMany('Bugger\Tag');
     }
+    public function belongsToTicket($id){
+        return $this->members->contains($id);
+    }
 }
