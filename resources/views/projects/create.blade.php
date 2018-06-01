@@ -48,7 +48,6 @@
                                 <button type="submit" class=" col s10 offset-s1 waves-effect waves-light btn btn-large blue-grey">
                                     {{ __('Create Project') }}
                                 </button>
-
                             </div>
                         </form>
                     </div>

@@ -44,4 +44,7 @@ class User extends Authenticatable
     public function getFullName(){
         return $this->fName . ' ' . $this->lName;
     }
+    public function comments(){
+        return $this->hasMany('Bugger\Comment');
+    }
 }

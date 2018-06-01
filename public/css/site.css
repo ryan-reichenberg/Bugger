@@ -99,6 +99,7 @@
 }
 .tags{
     float: left;
+    width:100%;
 }
 .tag{
     float:left !important;
@@ -114,4 +115,17 @@
 }
 #names-container{
     width: 250px;
+}
+.right{
+    float:right;
+}
+.actions a{
+    display: block;
+    margin: 0 auto;
+}
+.comment{
+    font-size: 18px !important;
+}
+.comment-text{
+    font-size: 14px !important;
 }

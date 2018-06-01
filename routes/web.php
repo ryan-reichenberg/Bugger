@@ -26,13 +26,24 @@ Route::resource('projects', 'ProjectsController', ['names' => [
         'create' => 'projects.create',
         'store' => 'projects.store',
         'show' => 'projects.show',
+        'edit' => 'projects.edit',
+        'update' => 'projects.update',
     ]
    ]);
 Route::resource('tickets', 'TicketsController', ['names' => [
     'store' => 'tickets.store',
     'show' => 'tickets.show',
+    'edit' => 'tickets.edit',
+    'update' => 'tickets.update',
 ]
 ]);
 Route::get('tickets/create/{id}', 'TicketsController@createTicket')->name('tickets.create');
-Route::post('/members', 'ProjectsController@addMember')->name('members');
+Route::post('/project/add/member', 'ProjectsController@addMember')->name('project.add.members');
 Route::get('/project/{project_id}/remove/{user_id}', 'ProjectsController@removeMember')->name('project.remove.member');
+Route::post('/ticket/add/member', 'TicketsController@addMember')->name('ticket.add.members');
+Route::get('/tickets/{ticket_id}/remove/{user_id}', 'TicketsController@removeMember')->name('ticket.remove.member');
+Route::post('comments/new', 'CommentsController@store')->name('comments.new');
+Route::post('tickets/priority', 'TicketsController@changePriority')->name('tickets.priority');
+Route::get('/tickets/{ticket_id}/remove/tag/{tag_id}', 'TicketsController@removeTag')->name('tag.remove');
+Route::post('/tickets/{ticket_id}/add/tags', 'TicketsController@removeTag')->name('tags.add');
+

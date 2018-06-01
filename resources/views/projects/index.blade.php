@@ -4,6 +4,7 @@
     <div class="wrapper">
         <div class="container">
             @include('partials.sidenav')
+            @include('partials.flash')
             <table>
                 <thead>
                 <tr>

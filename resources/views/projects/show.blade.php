@@ -9,7 +9,7 @@
                 <div class="col s12">
                     <div class="card">
                         <div class="card-content">
-                            <span class="card-title">{{ $project->name  }}</span>
+                            <span class="card-title">Project: {{ $project->name  }}</span>
                             <p>{{$project->description}}</p>
                             <p>Assigned Members:</p>
                             <div class="assigned-members">
@@ -86,9 +86,18 @@
                 </div>
             </div>
             </div>
+            <div class="fixed-action-btn horizontal click-to-toggle">
+                <a class="btn-floating btn-large blue lighten-2">
+                    <i class="material-icons">settings</i>
+                </a>
+                <ul>
+                    <li><a href="{{route('projects.edit', $project)}}"class="btn-floating blue"><i class="material-icons">edit</i></a></li>
+                    <li><a class="btn-floating red lighten-1"><i class="material-icons">delete</i></a></li>
+                </ul>
+            </div>
             <!-- Modal Structure -->
             <div id="assign-members" class="modal">
-                <form method="POST" action="{{ route('members') }}" id="assign-members" autocomplete="off">
+                <form method="POST" action="{{ route('project.add.members') }}" id="assign-members" autocomplete="off">
                     @csrf
                     <div class="modal-content">
                         <h4>Assign members to {{$project->name}}</h4>

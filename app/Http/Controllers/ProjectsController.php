@@ -94,7 +94,9 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $project = Project::find($id);
+        $users = User::all();
+        return view('projects.edit')->with('project', $project)->with('users', $users);
     }
 
     /**
@@ -106,7 +108,22 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('projects.edit')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $project = Project::find($id);
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->save();
+        return redirect()->route('projects')->with('alert-info','Successfully updated project information');
+
     }
 
     /**
