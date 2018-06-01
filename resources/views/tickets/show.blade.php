@@ -11,6 +11,7 @@
                     <div class="card">
                         <div class="card-content">
                             <span class="card-title">Ticket: {{$ticket->name}}
+                                <span class="new badge {{$ticket->closed ? 'red' : 'green'}}" data-badge-caption="{{$ticket->closed ? 'Closed' : 'Open'}}"></span>
                                 @switch($ticket->priority)
                                     @case('low')
                                         <span class="new badge green lighten-2" right data-badge-caption="Low"></span>
@@ -47,7 +48,13 @@
                                         @endif
                                     </div>
                                 @endforeach
-                                <a href="#assign-members" class="btn-floating btn waves-effect waves-light blue-grey add-button modal-trigger"><i class="material-icons">add</i></a>
+                                @if(Auth::user()->manager)
+                                        <a href="#assign-members" class="btn-floating btn waves-effect waves-light blue-grey add-button modal-trigger"><i class="material-icons">add</i></a>
+                                    @else
+                                        @if(!$ticket->members()->contain(Auth::user()->id))
+                                            <a href="{{route('ticket.self.assign')}}" class="waves-effect waves-light btn">Assign myself to this ticket</a>
+                                        @endif
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -78,10 +85,16 @@
                     <i class="material-icons">settings</i>
                 </a>
                 <ul>
-                    <li><a href="#actions" class="btn-floating purple lighten-3 modal-trigger"><i class="material-icons">help_outline</i></a></li>
+                    @if(!$ticket->closed)
+                        <li><a href="{{route('tickets.close', $ticket)}}" class="btn-floating green lighten-3 modal-trigger"><i class="material-icons">check</i></a></li>
+                    @endif
 
+                    <li><a href="#actions" class="btn-floating purple lighten-3 modal-trigger"><i class="material-icons">help_outline</i></a></li>
                     <li><a href="#tags" class="btn-floating grey modal-trigger"><i class="material-icons">more</i></a></li>
                     @if(Auth::user()->manager)
+                            @if($ticket->closed)
+                                <li><a href="{{route('tickets.open', $ticket)}}" class="btn-floating red lighten-3 modal-trigger"><i class="material-icons">replay</i></a></li>
+                            @endif
                         <li><a href="#priority" class="btn-floating yellow darken-1 modal-trigger"><i class="material-icons">priority_high</i></a></li>
                         <li><a href="{{route('tickets.edit', $ticket)}}"class="btn-floating blue"><i class="material-icons">edit</i></a></li>
                         <li>

@@ -170,27 +170,10 @@
                      }
                 });
             @if(Auth::check())
-                var low = {{Auth::user()->tickets->where('closed',false)->where('priority', 'low')->count()}};
-                var medium = {{Auth::user()->tickets->where('closed',false)->where('priority', 'medium')->count()}};
-                var high = {{Auth::user()->tickets->where('closed',false)->where('priority', 'high')->count()}};
-                console.log(low);
-                console.log(medium);
-                console.log(high);
-                new Chart(document.getElementById("issuesPriorityChart"), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ["Low", "Medium", "High"],
-                        datasets: [
-                            {
-                                label: "Opened Issues",
-                                backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f"],
-                                data: [low, medium, high]
-                            }
-                        ]
-                    }
-                });
-                var open = {{Auth::user()->tickets->where('closed', false)->count()}};
+             var open = {{Auth::user()->tickets->where('closed', false)->count()}};
                 var closed = {{Auth::user()->tickets->where('closed', true)->count()}};
+                console.log(open);
+                console.log(closed);
                 new Chart(document.getElementById("issuesOpenedChart"), {
                     type: 'bar',
                     data: {
@@ -214,6 +197,22 @@
                             }]
                         }
                     },
+                });
+                var low = {{Auth::user()->tickets->where('closed',false)->where('priority', 'low')->count()}};
+                var medium = {{Auth::user()->tickets->where('closed',false)->where('priority', 'medium')->count()}};
+                var high = {{Auth::user()->tickets->where('closed',false)->where('priority', 'high')->count()}};
+                new Chart(document.getElementById("issuesPriorityChart"), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ["Low", "Medium", "High"],
+                        datasets: [
+                            {
+                                label: "Opened Issues",
+                                backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f"],
+                                data: [low, medium, high]
+                            }
+                        ]
+                    }
                 });
                 var projectLabels = [];
                 var issues = [];

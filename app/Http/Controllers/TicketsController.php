@@ -179,4 +179,21 @@ class TicketsController extends Controller
             $ticket->tags()->detach($tag_id);
             return redirect()->route('tickets.show', ['id'=>$ticket_id])->with('alert-info','Successfully removed tag');
     }
+    public function selfAssign($ticket_id, $user_id){
+        $ticket = Ticket::find($request->ticket_id);
+        $ticket->members()->attach($user_id);
+        return redirect()->route('tickets.show', ['id'=>$ticket_id])->with('alert-info','Successfully removed tag');
+    }
+    public function closeTicket($ticket_id){
+        $ticket = Ticket::find($ticket_id);
+        $ticket->closed = true;
+        $ticket->save();
+        return redirect()->route('tickets.show', ['id'=>$ticket_id])->with('alert-info','Successfully closed ticket');
+    }
+    public function openTicket($ticket_id){
+        $ticket = Ticket::find($ticket_id);
+        $ticket->closed = false;
+        $ticket->save();
+        return redirect()->route('tickets.show', ['id'=>$ticket_id])->with('alert-info','Successfully opened ticket');
+    }
 }

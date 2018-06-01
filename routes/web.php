@@ -49,4 +49,7 @@ Route::post('tickets/priority', 'TicketsController@changePriority')->name('ticke
 Route::get('/tickets/{ticket_id}/remove/tag/{tag_id}', 'TicketsController@removeTag')->name('tag.remove');
 Route::post('/tickets/{ticket_id}/add/tags', 'TicketsController@addTags')->name('tags.add');
 Route::delete('/comment/{id}', 'CommentsController@destroy')->name('comments.delete');
+Route::get('/ticket/{ticket_id}/assign/{user_id}', 'TicketController@selfAssign')->name('tickets.self.assign');
+Route::get('/ticket/{ticket_id}/open', 'TicketsController@openTicket')->name('tickets.open');
+Route::get('/ticket/{ticket_id}/close', 'TicketsController@closeTicket')->name('tickets.close');
 
