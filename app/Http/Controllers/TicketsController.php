@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Bugger\Ticket;
 use Bugger\User;
 use Bugger\Project;
+use Bugger\Tag;
 
 class TicketsController extends Controller
 {
@@ -89,7 +90,8 @@ class TicketsController extends Controller
     {
         $ticket = Ticket::find($id);
         $users = User::all();
-        return view('tickets.show')->with('ticket', $ticket)->with('users', $users);
+        $tags = Tag::all()->diff($ticket->tags);
+        return view('tickets.show')->with('ticket', $ticket)->with('users', $users)->with('tags', $tags);
     }
 
     /**
@@ -139,7 +141,10 @@ class TicketsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ticket = Ticket::find($id);
+        $project_id = $ticket->project->id;
+        $ticket->delete();
+        return redirect()->route('projects.show', $project_id)->with('alert-info','Successfully deleted ticket');
     }
     public function addMember(Request $request){
         $ticket = Ticket::find($request->ticket_id);
@@ -163,6 +168,11 @@ class TicketsController extends Controller
             $ticket->save();
             return redirect()->route('tickets.show', ['id' => $request->ticket_id])->with('alert-info', 'Successfully updated priority');
         }
+    }
+    public function addTags(Request $request){
+        $ticket = Ticket::find($request->ticket_id);
+        $ticket->tags()->sync($request->input('tags'), false);
+        return redirect()->route('tickets.show', ['id'=>$request->ticket_id])->with('alert-info','Successfully added tags');
     }
     public function removeTag($ticket_id, $tag_id){
             $ticket = Ticket::find($ticket_id);

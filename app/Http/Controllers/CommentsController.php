@@ -94,6 +94,9 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+        $ticket_id = $comment->ticket->id;
+        $comment->delete();
+        return redirect()->route('tickets.show', $ticket_id)->with('alert-info','Successfully deleted comment');
     }
 }

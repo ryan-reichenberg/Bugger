@@ -17,7 +17,9 @@
                 <div class="collapsible-body">
                     <ul>
                         <li><a href="{{route('projects')}}"><i class="material-icons prefix">content_copy</i>View all</a></li>
-                        <li><a href="{{route('projects.create')}}"><i class="material-icons prefix">add</i>Create new project</a></li>
+                        @if(Auth::user()->manager)
+                            <li><a href="{{route('projects.create')}}"><i class="material-icons prefix">add</i>Create new project</a></li>
+                        @endif
                     </ul>
                 </div>
             </li>

@@ -10,7 +10,7 @@
                     <div class="card">
                         <div class="card-content">
                             <span class="card-title">Project: {{ $project->name  }}</span>
-                            <p>{{$project->description}}</p>
+                            <p class="description">{{$project->description}}</p>
                             <p>Assigned Members:</p>
                             <div class="assigned-members">
 
@@ -86,15 +86,23 @@
                 </div>
             </div>
             </div>
-            <div class="fixed-action-btn horizontal click-to-toggle">
-                <a class="btn-floating btn-large blue lighten-2">
-                    <i class="material-icons">settings</i>
-                </a>
-                <ul>
-                    <li><a href="{{route('projects.edit', $project)}}"class="btn-floating blue"><i class="material-icons">edit</i></a></li>
-                    <li><a class="btn-floating red lighten-1"><i class="material-icons">delete</i></a></li>
-                </ul>
-            </div>
+            @if(Auth::user()->manager)
+                <div class="fixed-action-btn horizontal click-to-toggle">
+                    <a class="btn-floating btn-large blue lighten-2">
+                        <i class="material-icons">settings</i>
+                    </a>
+                    <ul>
+                        <li><a href="{{route('projects.edit', $project)}}"class="btn-floating blue"><i class="material-icons">edit</i></a></li>
+                        <li>
+                            <form action="{{ url('projects' , $project->id ) }}" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn-floating red lighten-1"><i class="material-icons">delete</i></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @endif
             <!-- Modal Structure -->
             <div id="assign-members" class="modal">
                 <form method="POST" action="{{ route('project.add.members') }}" id="assign-members" autocomplete="off">

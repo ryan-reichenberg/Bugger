@@ -18,7 +18,7 @@
                 </thead>
 
                 <tbody>
-                @foreach(Auth::user()->projects as $project)
+                @foreach($projects as $project)
                 <tr>
                     <td>{{$project->name}}</td>
                     <td>{{$project->description}}</td>

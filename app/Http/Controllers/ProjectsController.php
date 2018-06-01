@@ -24,8 +24,9 @@ class ProjectsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        $projects = Project::all();
         $users = User::all();
-        return View('projects.index')->with('users', $users);
+        return View('projects.index')->with('users', $users)->with('projects', $projects);
     }
 
     /**
@@ -134,7 +135,9 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $project = Project::find($id);
+        $project->delete();
+        return redirect()->route('projects')->with('alert-info','Successfully deleted project');
     }
     public function addMember(Request $request){
         $project = Project::find($request->project_id);

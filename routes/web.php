@@ -28,6 +28,7 @@ Route::resource('projects', 'ProjectsController', ['names' => [
         'show' => 'projects.show',
         'edit' => 'projects.edit',
         'update' => 'projects.update',
+        'destroy' => 'projects.delete',
     ]
    ]);
 Route::resource('tickets', 'TicketsController', ['names' => [
@@ -35,6 +36,7 @@ Route::resource('tickets', 'TicketsController', ['names' => [
     'show' => 'tickets.show',
     'edit' => 'tickets.edit',
     'update' => 'tickets.update',
+    'destroy' => 'tickets.delete',
 ]
 ]);
 Route::get('tickets/create/{id}', 'TicketsController@createTicket')->name('tickets.create');
@@ -45,5 +47,6 @@ Route::get('/tickets/{ticket_id}/remove/{user_id}', 'TicketsController@removeMem
 Route::post('comments/new', 'CommentsController@store')->name('comments.new');
 Route::post('tickets/priority', 'TicketsController@changePriority')->name('tickets.priority');
 Route::get('/tickets/{ticket_id}/remove/tag/{tag_id}', 'TicketsController@removeTag')->name('tag.remove');
-Route::post('/tickets/{ticket_id}/add/tags', 'TicketsController@removeTag')->name('tags.add');
+Route::post('/tickets/{ticket_id}/add/tags', 'TicketsController@addTags')->name('tags.add');
+Route::delete('/comment/{id}', 'CommentsController@destroy')->name('comments.delete');
 
