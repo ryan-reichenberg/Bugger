@@ -46,6 +46,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if(!Auth::user()->manager)
+                                    <input type="hidden" name="user" value="{{Auth::user()->id}}">
+                                    @endif
+                                @if(Auth::user()->manager)
                                 <div class="row">
 
                                     <div class="input-field col s12">
@@ -64,6 +68,7 @@
                                     <p class="hide-members">Assigned members:</p>
                                     <div class="ac-users-tickets"></div>
                                 </div>
+                                @endif
                                 <input type="hidden" name="project_id" value="{{$project->id}}">
 
                                 <div class="row">

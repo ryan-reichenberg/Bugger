@@ -30,7 +30,7 @@
                             <div class="tags">
                                 @foreach($ticket->tags as $tag)
                                     @if(Auth::user()->manager)
-                                        <a href="{{route('tag.remove', ['ticket_id'=> $ticket->id, 'tag_id' => $tag->id])}}"><span class="new badge {{$tag->colour}} tag tooltipped"  data-badge-caption="{{$tag->name}}" data-position="bottom" data-delay="50" data-tooltip="Click to remove this tag."></span></a>
+                                        <a href="{{route('tag.remove', ['ticket_id'=> $ticket->id, 'tag_id' => $tag->id])}}"><span class="new badge {{$tag->colour}} tag"></span></a>
                                     @else
                                         <span class="new badge {{$tag->colour}} tag tooltipped"  data-badge-caption="{{$tag->name}}" data-position="bottom" data-delay="50" data-tooltip="Click to remove this tag."></span>
                                     @endif
@@ -51,7 +51,7 @@
                                 @if(Auth::user()->manager)
                                         <a href="#assign-members" class="btn-floating btn waves-effect waves-light blue-grey add-button modal-trigger"><i class="material-icons">add</i></a>
                                     @else
-                                        @if(!$ticket->members()->contain(Auth::user()->id))
+                                        @if(!$ticket->members->contains(Auth::user()->id))
                                             <a href="{{route('ticket.self.assign')}}" class="waves-effect waves-light btn">Assign myself to this ticket</a>
                                         @endif
                                 @endif

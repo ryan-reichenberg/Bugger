@@ -2,6 +2,7 @@
 
 namespace Bugger\Http\Controllers;
 
+use Bugger\Notifications\UserAssignedToProject;
 use Illuminate\Http\Request;
 use Bugger\User;
 use Bugger\Project;
@@ -64,6 +65,7 @@ class ProjectsController extends Controller
         $project = new Project;
         $project->name = $request->name;
         $project->description = $request->description;
+
         $project->save();
         if($request->members != ''){
             $user_ids = array_map('intval', explode(',', $request->members));
@@ -144,6 +146,10 @@ class ProjectsController extends Controller
         if($request->members != ''){
             $user_ids = array_map('intval', explode(',', $request->members));
             $project->members()->sync($user_ids, false);
+            $new =  User::whereIn('id', $user_ids)->get();
+            foreach($new as $member){
+                $member->notify(new UserAssignedToProject($member, $project));
+            }
         }
         return redirect()->route('projects.show', ['id'=>$request->project_id]);
     }

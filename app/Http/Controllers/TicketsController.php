@@ -2,6 +2,8 @@
 
 namespace Bugger\Http\Controllers;
 
+use Bugger\Notifications\NewTicket;
+use Bugger\Notifications\UserAssignedToTicket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Bugger\Ticket;
@@ -57,7 +59,7 @@ class TicketsController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
-            'membersTickets' => 'required',
+            'membersTickets' => $request->membersTickets != '' ? 'required' : '',
         ], $messages);
         if ($validator->fails()) {
             return redirect()->route('tickets.create', ['id'=> $request->project_id])
@@ -70,9 +72,26 @@ class TicketsController extends Controller
         $ticket->description = $request->description;
         $ticket->project_id = $request->project_id;
         $ticket->save();
-        if($request->members != ''){
-            $user_ids = array_map('intval', explode(',', $request->members));
-            $ticket->members()->sync($user_ids);
+        if($request->user !=  "") {
+            $ticket->members()->attach($request->user);
+        }
+        if($request->membersTickets != ''){
+            $user_ids = array_map('intval', explode(',', $request->membersTickets));
+            $ticket->members()->sync($user_ids, false);
+            $new =  User::whereIn('id', $user_ids)->get();
+            foreach ($ticket->project->members->diff($new) as $member) {
+                $member->notify(new NewTicket($member, $ticket));
+            }
+            foreach($new as $member){
+                $member->notify(new UserAssignedToTicket($member, $ticket));
+            }
+        }else {
+            foreach ($ticket->project->members as $member) {
+                if ($member->id == $request->user) {
+                    continue;
+                }
+                $member->notify(new NewTicket($member, $ticket));
+            }
         }
         return redirect()->route('projects.show', ['id'=> $request->project_id]);
 
@@ -130,6 +149,7 @@ class TicketsController extends Controller
         $ticket->name = $request->name;
         $ticket->description = $request->description;
         $ticket->save();
+
         return redirect()->route('tickets.show',$ticket)->with('alert-info','Successfully updated ticket information');
     }
 
@@ -151,6 +171,10 @@ class TicketsController extends Controller
         if($request->members != ''){
             $user_ids = array_map('intval', explode(',', $request->members));
             $ticket->members()->sync($user_ids, false);
+            $new =  User::whereIn('id', $user_ids)->get();
+            foreach($new as $member){
+                $member->notify(new UserAssignedToTicket($member, $ticket));
+            }
         }
         return redirect()->route('tickets.show', ['id'=>$request->ticket_id]);
     }

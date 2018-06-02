@@ -4,7 +4,7 @@
     <div class="wrapper">
         <div class="container">
            @include('partials.sidenav')
-
+            @include('partials.flash')
             @if (session('status'))
                 <div class="row">
                     <div class="col alert m4">

@@ -28,7 +28,7 @@
     <li>
         <ul class="collapsible collapsible-accordion">
             <li class="no-padding">
-                <a class="collapsible-header" href="#"><i class="material-icons prefix">settings</i>Settings</a>
+                <a class="collapsible-header" href="{{route('users.update.form', Auth::user())}}"><i class="material-icons prefix">settings</i>Settings</a>
                 <div class="collapsible-body">
                     <ul>
                     </ul>

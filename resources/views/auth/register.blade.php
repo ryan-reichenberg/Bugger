@@ -16,14 +16,14 @@
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">person_outline</i>
                                 <label for="fName">{{ __('First Name') }}</label>
-                                <input id="fName" type="text"  name="fName" value="{{ old('fName') }}" required autofocus>
+                                <input id="fName" type="text"  name="fName" value="{{ old('fName',$user->fName) }}" required autofocus>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">person_outline</i>
                                 <label for="lName">{{ __('Last Name') }}</label>
-                                <input id="lName" type="text"  name="lName" value="{{ old('lName') }}" required autofocus>
+                                <input id="lName" type="text"  name="lName" value="{{ old('lName',$user->lName) }}" required autofocus>
 
                             </div>
                         </div>

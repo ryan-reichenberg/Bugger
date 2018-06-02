@@ -52,4 +52,6 @@ Route::delete('/comment/{id}', 'CommentsController@destroy')->name('comments.del
 Route::get('/ticket/{ticket_id}/assign/{user_id}', 'TicketController@selfAssign')->name('tickets.self.assign');
 Route::get('/ticket/{ticket_id}/open', 'TicketsController@openTicket')->name('tickets.open');
 Route::get('/ticket/{ticket_id}/close', 'TicketsController@closeTicket')->name('tickets.close');
+Route::get('user/update/{id}', 'UsersController@showUpdateForm')->name('users.update.form');
+Route::post('user/update/details', 'UsersController@updateDetails')->name('users.update');
 

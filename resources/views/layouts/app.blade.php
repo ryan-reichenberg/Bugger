@@ -218,7 +218,7 @@
                 var issues = [];
                 @foreach(Auth::user()->projects as $project)
                     projectLabels.push('{{$project->name}}');
-                    issues.push({{$project->getUserTickets(Auth::user()->id)->count()}});
+                    issues.push({{$project->getUserTickets(Auth::user()->id)->where('closed', false)->count()}});
 
                 @endforeach
                 new Chart(document.getElementById("issuesToProjectsChart"), {

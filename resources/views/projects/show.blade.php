@@ -13,13 +13,20 @@
                             <p class="description">{{$project->description}}</p>
                             <p>Assigned Members:</p>
                             <div class="assigned-members">
-
+                                @if(Auth::user()->manager)
                                 @foreach($project->members as $member)
                                     <div class="member">
                                         <a href="{{route('project.remove.member', ['project_id'=>$project->id, 'user_id'=> $member->id])}}" class="tooltipped"  data-position="bottom" data-delay="50" data-tooltip="Click to remove this member."><img src="https://ui-avatars.com/api/?name={{$member->getFullName()}}&size=32&background=607D8B&color=fff" alt="{{$member->getFullName()}}"></a><p class="nametag">{{$member->getFullName()}}</p>
                                     </div>
                                 @endforeach
                                     <a href="#assign-members" class="btn-floating btn waves-effect waves-light blue-grey add-button modal-trigger"><i class="material-icons">add</i></a>
+                                    @else
+                                    @foreach($project->members as $member)
+                                        <div class="member">
+                                           <img src="https://ui-avatars.com/api/?name={{$member->getFullName()}}&size=32&background=607D8B&color=fff" alt="{{$member->getFullName()}}"></a><p class="nametag">{{$member->getFullName()}}</p>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -39,6 +46,7 @@
                                 <th>Tags</th>
                                 <th>Name</th>
                                 <th>Assigned</th>
+                                <th>Closed</th>
                                 <th>Priority</th>
                                 <th>Submitted</th>
 
@@ -62,6 +70,9 @@
                                                 <span class="name">{{$member->getFullName()}}{{$loop->last ? '' : ', '}}</span>
                                                 @endforeach
                                             </p>
+                                        </td>
+                                        <td>
+                                                <span class="new badge tag {{$ticket->closed ? 'red' : 'green'}}" data-badge-caption="{{$ticket->closed ? 'Closed' : 'Open'}}"></span>
                                         </td>
                                         <td>
                                             @switch($ticket->priority)
