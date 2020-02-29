@@ -9,6 +9,8 @@ An application that tracks bug descriptions by project and displays stats in a d
 * Blade Templating Engine
 * Eloquent ORM
 * Docker
+* MySQL
+* Nginx
 
 ## To Get Started:
 Simply run:\
