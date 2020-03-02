@@ -1,41 +1,44 @@
-version: '3'
+version: "3"
 services:
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    ports:
+      - "88:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+  #MySQL Service
+  db:
+    image: mysql:5.7.22
+    container_name: db
+    ports:
+      - "1306:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: developer
+      MYSQL_PASSWORD: GgIg2dbE7C
+    volumes:
+      - lbdata:/var/lib/mysql/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     #PHP Service
-    app:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        image: php_service
-        container_name: app
-        working_dir: /var/www
-        volumes:
-            - ./:/var/www
-            - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    #Nginx Service
-    webserver:
-        image: nginx:alpine
-        container_name: webserver
-        ports:
-            - "88:80"
-            - "443:443"
-        volumes:
-            - ./:/var/www
-            - ./nginx/conf.d/:/etc/nginx/conf.d/
-    #MySQL Service
-    db:
-        image: mysql:5.7.22
-        container_name: db
-        ports:
-            - "1306:3306"
-        environment:
-            MYSQL_DATABASE: laravel
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_USER: developer
-            MYSQL_PASSWORD: GgIg2dbE7C
-        volumes:
-            - lbdata:/var/lib/mysql/
-            - ./mysql/my.cnf:/etc/mysql/my.cnf
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php_service
+    container_name: app
+    working_dir: /var/www
+    depends_on:
+      - db
+      - webserver
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
 #Volumes
 volumes:
-    lbdata:
-        driver: local
+  lbdata:
+    driver: local
